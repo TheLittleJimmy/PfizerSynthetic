@@ -18,14 +18,13 @@ The repository is organized as an installable Python package while preserving th
 ```text
 src/pdc2/                  Core PhaseSyn/PDC2 model, training, generation, plotting CLI
 evaluation/                Longitudinal and survival metrics/plots
-utils/                     Legacy HI-VAE helper modules used by the core model
+utils/                     HI-VAE helper modules used by the core model
 experiments/pbc_core4/     PBC/PBC2 Core4 experiment suite and tuned reference-figure script
 experiments/simulation_pos/ Probability-of-success simulation pipeline
 scripts/pdc2/              Holdout training/evaluation and figure-generation scripts
 scripts/                   Simulation data generator and simulation holdout drivers
 configs/                   Base model configs
 data/pbc2/                 Small local PBC/PBC2 source tables used by the tutorial
-tests/                     Smoke and chronology tests
 docs/tutorial.md           Step-by-step reproduction tutorial
 ```
 
@@ -58,7 +57,6 @@ python -m pip install -e ".[benchmarks]"
 ## Quick Checks
 
 ```bash
-python -m pytest tests/test_prior_cohort_generation.py -q
 pfizer-synthetic --help
 pfizer-pbc-core4 --help
 pfizer-simulation-holdout --help

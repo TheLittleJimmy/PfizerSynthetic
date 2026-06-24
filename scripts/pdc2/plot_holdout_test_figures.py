@@ -54,7 +54,7 @@ from pdc2.plot_overfit_figures import (  # noqa: E402
     plot_variable_corr_per_visit,
     plot_visit_correlations,
 )
-from scripts.pdc2.run_compact_posterior_search import (  # noqa: E402
+from scripts.pdc2.replicate_plots import (  # noqa: E402
     plot_categorical_replicates,
     plot_continuous_replicates,
     plot_km_curves_replicates,

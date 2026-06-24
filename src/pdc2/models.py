@@ -1633,8 +1633,6 @@ class PhaseSynModel(nn.Module):
                 "PhaseSyn baseline encoder expects non-survival baseline masks; "
                 f"got {tuple(batch_miss.shape)} for {len(self.hivae.feat_types_list)} baseline features."
             )
-        if self.encoder_conditioning == "survival_conditioned_legacy":
-            raise ValueError("survival_conditioned_legacy is no longer supported by dynamic-survival PhaseSyn.")
         if self.encoder_conditioning != "baseline_only":
             raise ValueError(f"Unsupported encoder_conditioning: {self.encoder_conditioning}")
         return batch_miss.clone()

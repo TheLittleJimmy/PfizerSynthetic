@@ -57,7 +57,6 @@ ACTIVE_METHODS = [
     "CTGAN",
     "PhaseSyn",
 ]
-DEPRECATED_METHODS = ["empirical_subject_bootstrap", "modular_deep_generator"]
 
 
 def analysis_static(data: PBCData, endpoint: str = "composite") -> pd.DataFrame:
@@ -987,9 +986,7 @@ class PhaseSynGenerator:
             },
             "evaluation": {
                 "deterministic_static_export": False,
-                "copy_static_overfit_reference": False,
                 "calibrate_static_covariates": False,
-                "copy_survival_overfit_reference": False,
                 "calibrate_survival_km": False,
                 "calibrate_survival_event_rate": False,
             },
@@ -1065,9 +1062,7 @@ class PhaseSynGenerator:
             },
             "evaluation": {
                 "deterministic_static_export": False,
-                "copy_static_overfit_reference": False,
                 "calibrate_static_covariates": False,
-                "copy_survival_overfit_reference": False,
                 "calibrate_survival_km": False,
                 "calibrate_survival_event_rate": False,
             },

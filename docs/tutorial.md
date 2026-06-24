@@ -20,15 +20,7 @@ pfizer-simulate-rct --help
 pfizer-simulation-holdout --help
 ```
 
-## 2. Run Basic Tests
-
-```bash
-python -m pytest tests/test_prior_cohort_generation.py tests/test_phasesyn_chronology_inputs.py -q
-```
-
-These tests verify basic prior generation behavior and the chronology contract that future outcomes are not used as model inputs during generation.
-
-## 3. PBC/PBC2 Core4 Workflow
+## 2. PBC/PBC2 Core4 Workflow
 
 The repository includes the small local PBC/PBC2 source tables in `data/pbc2`. The main PBC config is repository-relative:
 
@@ -68,7 +60,7 @@ outputs/pbc_experiments/experiment_20260604_core4_tuned/tables/
 outputs/pbc_experiments/experiment_20260604_core4_tuned/figures/
 ```
 
-## 4. PBC Reference Figures
+## 3. PBC Reference Figures
 
 After the tuned PBC model exists, generate PDC2-style train/test and treatment-split figures:
 
@@ -93,7 +85,7 @@ train/figures_by_treatment/
 test/figures_by_treatment/
 ```
 
-## 5. Simple Simulation Holdout Workflow
+## 4. Simple Simulation Holdout Workflow
 
 Generate a PhaseSyn-compatible synthetic randomized-trial dataset:
 
@@ -148,7 +140,7 @@ outputs/simulation/prior_generation/prior_generation_metadata.json
 outputs/simulation/leakage_audit.json
 ```
 
-## 6. Probability-of-Success Simulation Pipeline
+## 5. Probability-of-Success Simulation Pipeline
 
 The PoS simulation code lives in `experiments/simulation_pos`.
 
@@ -165,7 +157,7 @@ pfizer-simulation-pos --config examples/simulation_pos_smoke.yaml --stage oracle
 pfizer-simulation-pos --config examples/simulation_pos_smoke.yaml --stage train --stage virtual --stage evaluate --stage figures
 ```
 
-## 7. Core PDC2 CLI
+## 6. Core PDC2 CLI
 
 Train on the base PDC2/PBC2-style config:
 
@@ -183,7 +175,7 @@ pfizer-synthetic generate-prior \
   --treatment 0
 ```
 
-## 8. Practical Notes
+## 7. Practical Notes
 
 - Use `--device cuda` only when CUDA is available.
 - Generated outputs are ignored by Git.

@@ -254,20 +254,6 @@ def calibrate_static_covariates(real_df: pd.DataFrame, synthetic_df: pd.DataFram
     return out
 
 
-def copy_static_overfit_reference(real_df: pd.DataFrame, synthetic_df: pd.DataFrame, types: list[dict[str, Any]]) -> pd.DataFrame:
-    out = synthetic_df.copy()
-    for feature in types:
-        name = "time" if feature["type"].startswith("surv") else feature["name"]
-        if feature["type"].startswith("surv"):
-            if "time" in out and "time" in real_df:
-                out["time"] = real_df["time"].to_numpy()
-            if "censor" in out and "censor" in real_df:
-                out["censor"] = real_df["censor"].to_numpy()
-        elif name in out and name in real_df:
-            out[name] = real_df[name].to_numpy()
-    return out
-
-
 def _batch_longitudinal(bundle: PDC2Bundle, indices: np.ndarray, device: torch.device):
     panel = bundle.longitudinal
     return (
@@ -519,13 +505,9 @@ def train_model(
     overfit_artifact = overfit_name is not None
     if overfit_artifact:
         raw_synthetic_df.to_csv(output / "synthetic_samples_model_raw.csv", index=False)
-    if bool(eval_cfg.get("copy_static_overfit_reference", False)):
-        synthetic_df = copy_static_overfit_reference(bundle.raw_df, synthetic_df, bundle.types)
-    elif bool(eval_cfg.get("calibrate_static_covariates", overfit_artifact)):
+    if bool(eval_cfg.get("calibrate_static_covariates", overfit_artifact)):
         synthetic_df = calibrate_static_covariates(bundle.raw_df, synthetic_df, bundle.types)
-    if bool(eval_cfg.get("copy_survival_overfit_reference", False)):
-        synthetic_df = copy_survival_overfit_reference(bundle.raw_df, synthetic_df)
-    elif bool(eval_cfg.get("calibrate_survival_km", overfit_artifact)):
+    if bool(eval_cfg.get("calibrate_survival_km", overfit_artifact)):
         synthetic_df = calibrate_survival_km(bundle.raw_df, synthetic_df)
     elif bool(eval_cfg.get("calibrate_survival_event_rate", overfit_artifact)):
         synthetic_df = calibrate_survival_event_rate(bundle.raw_df, synthetic_df)
@@ -546,9 +528,6 @@ def train_model(
         if bool(eval_cfg.get("calibrate_longitudinal_observed", overfit_artifact)):
             synthetic_long, calibration_metrics = calibrate_longitudinal_observed(bundle, synthetic_long)
             support_metrics.update(calibration_metrics)
-        if bool(eval_cfg.get("copy_longitudinal_overfit_reference", False)):
-            synthetic_long = copy_longitudinal_overfit_reference(bundle.longitudinal, synthetic_long)
-            support_metrics["longitudinal_overfit_reference_copied"] = 1.0
         save_longitudinal_samples(bundle, synthetic_long, output / "synthetic_longitudinal_samples.csv")
 
     metrics = evaluate_outputs(bundle, synthetic_df, synthetic_long, figures)
@@ -618,19 +597,6 @@ def calibrate_survival_km(real_df: pd.DataFrame, synthetic_df: pd.DataFrame) -> 
         matched_event = ref_event[ref_idx]
     out.iloc[syn_order, out.columns.get_loc("time")] = matched_time
     out.iloc[syn_order, out.columns.get_loc("censor")] = matched_event
-    return out
-
-
-def copy_survival_overfit_reference(real_df: pd.DataFrame, synthetic_df: pd.DataFrame) -> pd.DataFrame:
-    """Copy subject-aligned survival pairs for strict overfit diagnostics."""
-    if "censor" not in synthetic_df or "time" not in synthetic_df:
-        return synthetic_df
-    if "censor" not in real_df or "time" not in real_df:
-        return synthetic_df
-    out = synthetic_df.copy()
-    n = min(len(real_df), len(out))
-    out.iloc[:n, out.columns.get_loc("time")] = pd.to_numeric(real_df["time"].iloc[:n], errors="coerce").to_numpy(dtype=float)
-    out.iloc[:n, out.columns.get_loc("censor")] = pd.to_numeric(real_df["censor"].iloc[:n], errors="coerce").to_numpy(dtype=float)
     return out
 
 
@@ -1084,13 +1050,6 @@ def calibrate_longitudinal_observed(bundle: PDC2Bundle, synthetic_long: np.ndarr
     out, metrics = _apply_longitudinal_support(bundle, out)
     metrics["longitudinal_overfit_calibrated_cells"] = float(calibrated_cells)
     return out, metrics
-
-
-def copy_longitudinal_overfit_reference(panel: LongitudinalPanel, synthetic_long: np.ndarray) -> np.ndarray:
-    out = synthetic_long.copy()
-    mask = panel.masks.detach().cpu().numpy().astype(bool)
-    out[mask] = panel.raw_values[mask]
-    return out
 
 
 def _inverse_longitudinal(bundle: PDC2Bundle, pred: np.ndarray) -> tuple[np.ndarray, dict[str, float]]:

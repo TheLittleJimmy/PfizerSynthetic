@@ -455,9 +455,7 @@ def _candidate_config(args: argparse.Namespace) -> dict[str, Any]:
         },
         "evaluation": {
             "deterministic_static_export": False,
-            "copy_static_overfit_reference": False,
             "calibrate_static_covariates": False,
-            "copy_survival_overfit_reference": False,
             "calibrate_survival_km": False,
             "calibrate_survival_event_rate": False,
             "calibrate_longitudinal_observed": False,

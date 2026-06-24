@@ -294,10 +294,8 @@ def config_for_overfit(cfg: dict[str, Any], setting_name: str) -> dict[str, Any]
     overfit = out.setdefault("overfit", {})
     evaluation = out.setdefault("evaluation", {})
     evaluation["deterministic_static_export"] = True
-    evaluation["copy_static_overfit_reference"] = False
     evaluation["calibrate_static_covariates"] = True
     evaluation["calibrate_survival_km"] = False
-    evaluation["copy_survival_overfit_reference"] = False
     evaluation["calibrate_longitudinal_observed"] = True
     training["batch_size"] = int(out["training"]["subset_size"])
     overfit["rmse_ratio_threshold"] = min(float(overfit.get("rmse_ratio_threshold", 1.05)), 0.35)

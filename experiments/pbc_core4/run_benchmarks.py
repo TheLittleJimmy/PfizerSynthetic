@@ -6,7 +6,7 @@ from pathlib import Path
 import yaml
 
 from .load_pbc import load_processed, project_path
-from .methods import ACTIVE_METHODS, DEPRECATED_METHODS, build_method, split_static_long, write_dependency_status
+from .methods import ACTIVE_METHODS, build_method, split_static_long, write_dependency_status
 
 
 def fit_benchmarks(cfg: dict, data=None, smoke: bool = False) -> dict:
@@ -24,9 +24,6 @@ def fit_benchmarks(cfg: dict, data=None, smoke: bool = False) -> dict:
     use_mixedlm = bool(cfg.get("generation", {}).get("exp1_use_mixedlm", True))
     for i, name in enumerate(cfg["methods"]["active"]):
         if name == "PhaseSyn":
-            continue
-        if name in DEPRECATED_METHODS:
-            status_rows.append({"method": name, "status": "skipped_deprecated", "reason": "removed from active benchmark set"})
             continue
         if name not in ACTIVE_METHODS:
             status_rows.append({"method": name, "status": "skipped_unknown", "reason": "not in ACTIVE_METHODS"})
