@@ -1,0 +1,112 @@
+output_dir: outputs/simulation_pos
+random_seed: 20260618
+n_baseline_covariates: 30
+n_longitudinal_biomarkers: 30
+n_timepoints: 10
+time_grid:
+  - 0.0
+  - 0.1111111111111111
+  - 0.2222222222222222
+  - 0.3333333333333333
+  - 0.4444444444444444
+  - 0.5555555555555556
+  - 0.6666666666666666
+  - 0.7777777777777778
+  - 0.8888888888888888
+  - 1.0
+missing_rate_target: 0.20
+
+effect_scenarios:
+  null:
+    gamma_A: 0.0
+    psi_1: 0.0
+    psi_2: 0.0
+  moderate:
+    gamma_A: -0.35
+    psi_1: -0.25
+    psi_2: -0.15
+
+n_phase2: 60
+n_phase2_replicates: 2
+n_phase3_grid: [80, 120]
+m_oracle: 10
+m_syn: 10
+virtual_batch_size: 5
+go_threshold: 0.80
+
+methods:
+  active: [PhaseSyn, LMM-AFT, JM-RE, TVAE, CTGAN]
+  benchmarks: [LMM-AFT, JM-RE, TVAE, CTGAN]
+
+phasesyn_training:
+  device: cpu
+  gpu_ids: all
+  parallel_gpu_workers: auto
+  epochs: 3
+  batch_size: 32
+  learning_rate: 0.001
+  hidden_dim: 6
+  ode_hidden_dim: 6
+  latent_z_dim: 4
+  latent_u_dim: 4
+  survival_intervals: 5
+  dynamic_survival_num_layers: 2
+  dynamic_survival_dropout: 0.0
+  weight_baseline: 1.0
+  weight_longitudinal: 1.0
+  weight_survival: 1.0
+  weight_randomization: 0.0
+  randomization_loss_warmup_epochs: 0
+  randomization_loss_ramp_epochs: 1
+  randomization_loss_on: z_mean
+  survival_event_weight: 1.0
+  survival_event_aux_weight: 0.0
+  survival_time_aux_weight: 0.0
+  survival_time_head_weight: 0.0
+  survival_warmup_epochs: 0
+  u0_sigma_mode: learned
+  u0_fixed_sigma: 0.05
+  u0_sigma_min: 0.03
+  u0_kl_weight: 0.0
+  use_u0_mean_at_eval: false
+
+phasesyn_generation:
+  deterministic_latents: false
+  deterministic_u0:
+  deterministic_survival:
+  survival_event_export: sample
+
+benchmark_training:
+  torch_epochs_tvae: 2
+  torch_epochs_ctgan: 2
+
+longitudinal_endpoint:
+  biomarker: L26
+  biomarker_index: 25
+  visit_index: -1
+  favorable_direction: lower
+  alpha: 0.05
+  go_threshold: 0.80
+  output_subdir: longitudinal_endpoint_L26_final_visit
+
+smoke:
+  output_dir: outputs/simulation_pos/smoke_test
+  effect_scenarios: [null]
+  n_phase2: 24
+  n_phase2_replicates: 1
+  n_phase3_grid: [40]
+  m_oracle: 3
+  m_syn: 3
+  virtual_batch_size: 3
+  phasesyn_training:
+    device: cpu
+    epochs: 1
+    batch_size: 16
+    hidden_dim: 6
+    ode_hidden_dim: 6
+    latent_z_dim: 4
+    latent_u_dim: 4
+    survival_intervals: 5
+  benchmark_training:
+    torch_epochs_tvae: 1
+    torch_epochs_ctgan: 1

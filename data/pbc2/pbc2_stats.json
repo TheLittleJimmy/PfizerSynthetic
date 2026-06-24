@@ -1,0 +1,63 @@
+{
+  "feature_cols": [
+    "ascites",
+    "hepatomegaly",
+    "spiders",
+    "edema",
+    "serBilir",
+    "albumin",
+    "alkaline",
+    "SGOT",
+    "platelets",
+    "prothrombin",
+    "histologic"
+  ],
+  "min": {
+    "ascites": 0.0,
+    "hepatomegaly": 0.0,
+    "spiders": 0.0,
+    "edema": 0.0,
+    "serBilir": 0.1,
+    "albumin": 1.17,
+    "alkaline": 73.0,
+    "SGOT": 6.2,
+    "platelets": 40.0,
+    "prothrombin": 9.0,
+    "histologic": 0.0
+  },
+  "max": {
+    "ascites": 1.0,
+    "hepatomegaly": 1.0,
+    "spiders": 1.0,
+    "edema": 2.0,
+    "serBilir": 41.0,
+    "albumin": 8.01,
+    "alkaline": 13862.0,
+    "SGOT": 1205.0,
+    "platelets": 991.0,
+    "prothrombin": 36.0,
+    "histologic": 3.0
+  },
+  "median": {
+    "ascites": 0.0,
+    "hepatomegaly": 1.0,
+    "spiders": 0.0,
+    "edema": 0.0,
+    "serBilir": 1.4,
+    "albumin": 3.44,
+    "alkaline": 1076.0,
+    "SGOT": 107.0,
+    "platelets": 227.0,
+    "prothrombin": 10.8,
+    "histologic": 2.0
+  },
+  "n_patients": 312,
+  "n_records": 1945,
+  "n_features": 11,
+  "label_cols": [
+    "visit_time",
+    "patient_id",
+    "drug",
+    "sex"
+  ]
+}

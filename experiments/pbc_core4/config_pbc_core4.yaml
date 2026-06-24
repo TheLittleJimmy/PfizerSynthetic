@@ -1,0 +1,69 @@
+seed: 20260604
+project_root: .
+source_data_dir: data/pbc2
+processed_data_dir: data/processed/pbc_core4
+output_dir: outputs/pbc_experiments/experiment_20260604_core4
+
+endpoint:
+  primary: composite
+  sensitivity: death_only
+
+split:
+  train: 0.60
+  validation: 0.20
+  test: 0.20
+
+methods:
+  active:
+    - LMM-AFT
+    - JM-RE
+    - TVAE
+    - CTGAN
+    - PhaseSyn
+
+generation:
+  exp1_replicates: 500
+  exp1_batch_size: 25
+  exp1_use_mixedlm: false
+  exp2_replicates_by_R: [1, 5, 10, 20]
+  exp3_posterior_samples: 100
+  exp4_replicates: 500
+  smoke_replicates: 3
+  time_grid: [0.0, 0.5, 1.0, 2.0, 3.0, 4.0, 5.0, 7.5, 10.0, 12.5, 15.0]
+
+phasesyn:
+  device: cpu
+  epochs: 220
+  batch_size: 64
+  lr: 0.0011
+  z_dim: 4
+  s_dim: 4
+  y_dim_static: 4
+  u_dim: 4
+  gru_hidden_dim: 6
+  ode_hidden_dim: 6
+  decoder_hidden_dim: 6
+  u0_initializer_hidden_dim: 6
+  dynamic_survival_hidden_dim: 6
+  dynamic_survival_num_layers: 2
+  dynamic_survival_dropout: 0.0
+  use_u0_mean_at_eval: false
+  n_intervals: 10
+  lambda_surv: 1.6
+  survival_warmup_epochs: 0
+  kl_weight_s: 0.15
+  kl_weight_z: 0.15
+  kl_weight_u: 0.0
+  longitudinal_weight: 1.2
+  continuous_mse_weight: 0.5
+
+smoke:
+  enabled: false
+  exp1_replicates: 3
+  exp3_posterior_samples: 10
+  exp4_replicates: 3
+  phasesyn_epochs: 2
+  max_train_subjects: 32
+  max_eval_subjects: 24
+  exp4_sample_sizes: [24, 32]
+  exp4_allocation_ratios: ["1:1"]

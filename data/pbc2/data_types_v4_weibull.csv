@@ -1,0 +1,16 @@
+name,type,dim,nclass
+survcens,surv_weibull,2,
+drug,cat,1,2
+sex,cat,1,2
+ascites,cat,1,2
+hepatomegaly,cat,1,2
+spiders,cat,1,2
+edema,cat,1,3
+histologic,cat,1,4
+serBilir,pos,1,
+albumin,real,1,
+alkaline,pos,1,
+SGOT,pos,1,
+platelets,pos,1,
+prothrombin,pos,1,
+age,pos,1,

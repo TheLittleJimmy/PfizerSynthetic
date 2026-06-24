@@ -1,0 +1,61 @@
+dataset:
+  name: pdc2
+  output_root: outputs/pdc2
+  max_visits:
+model:
+  longitudinal_mode: latent_ode
+  survival: dynamic
+  z_dim: 6
+  s_dim: 6
+  y_dim_static: 6
+  u_dim: 6
+  gru_hidden_dim: 6
+  ode_hidden_dim: 6
+  n_intervals: 16
+  lambda_surv: 1.0
+  survival_warmup_epochs: 0
+  admin_censoring_mode: event_and_censor_survival
+  admin_end_threshold: 0.999999
+  dynamic_survival_hidden_dim: 6
+  dynamic_survival_num_layers: 2
+  dynamic_survival_dropout: 0.0
+  survival_history_pooling: boundary
+  u0_init_mode: baseline_l0
+  stochastic_u0: true
+  u0_sigma_mode: learned
+  u0_fixed_sigma: 0.05
+  u0_sigma_min: 0.03
+  u0_kl_weight: 0.0
+  use_u0_mean_at_eval: false
+  encoder_conditioning: baseline_only
+  detach_l0_for_u0_init: false
+  baseline_time_eps: 1.0e-6
+  lambda_l0_hivae: 1.0
+  baseline_long_weight: 1.0
+  condition_ode_on_baseline: true
+  condition_longitudinal_decoder_on_baseline: true
+  generation_baseline_mode: sampled
+  kl_weight_s: 1.0
+  kl_weight_z: 1.0
+  kl_weight_u: 0.1
+  static_weight: 1.0
+  longitudinal_weight: 1.0
+training:
+  epochs: 10
+  batch_size: 64
+  lr: 0.001
+  seed: 1
+  early_stopping: false
+  device: cpu
+generation:
+  prior_n: 100
+  prior_treatment: 0
+  time_grid: [0.0, 0.25, 0.5, 0.75, 1.0]
+  deterministic: false
+overfit:
+  settings: [small, medium, large]
+  subset_size: 32
+  seed: 1
+  min_loss_decrease: 0.001
+  rmse_ratio_threshold: 1.05
+  event_rate_tolerance: 0.02

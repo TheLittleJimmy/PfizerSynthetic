@@ -1,0 +1,28 @@
+model:
+  longitudinal_mode: latent_ode
+  survival: dynamic
+  z_dim: 6
+  s_dim: 6
+  y_dim_static: 6
+  u_dim: 6
+  gru_hidden_dim: 6
+  ode_hidden_dim: 6
+  n_intervals: 5
+  lambda_surv: 1.0
+  dynamic_survival_hidden_dim: 6
+  dynamic_survival_num_layers: 2
+  dynamic_survival_dropout: 0.0
+  survival_history_pooling: boundary
+  kl_weight_u: 0.05
+training:
+  epochs: 3
+  batch_size: 32
+  lr: 0.003
+  seed: 1
+  early_stopping: false
+overfit:
+  subset_size: 32
+  seed: 1
+  min_loss_decrease: 0.0
+  rmse_ratio_threshold: 1.05
+  event_rate_tolerance: 0.05

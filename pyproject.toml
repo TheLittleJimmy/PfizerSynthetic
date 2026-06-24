@@ -1,0 +1,80 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pfizer-synthetic"
+version = "0.1.0"
+description = "PhaseSyn synthetic clinical-trial trajectory model and PBC/simulation experiment pipelines."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "Research use only; add a project license before public redistribution." }
+authors = [
+  { name = "PhaseSyn contributors" }
+]
+keywords = [
+  "synthetic-data",
+  "clinical-trials",
+  "longitudinal-data",
+  "survival-analysis",
+  "generative-models"
+]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Intended Audience :: Science/Research",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence"
+]
+dependencies = [
+  "numpy>=1.23",
+  "pandas>=1.5,<3",
+  "scipy>=1.9",
+  "scikit-learn>=1.2",
+  "matplotlib>=3.6",
+  "PyYAML>=6.0",
+  "torch>=2.0",
+  "lifelines>=0.27",
+  "statsmodels>=0.13",
+  "tqdm>=4.64"
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=7",
+  "build>=1.0",
+  "twine>=4.0"
+]
+benchmarks = [
+  "synthcity",
+  "sdv"
+]
+
+[project.scripts]
+pfizer-synthetic = "pdc2.cli:main"
+pfizer-pbc-core4 = "experiments.pbc_core4.run_all:main"
+pfizer-pbc-reference-figures = "experiments.pbc_core4.generate_pdc2_reference_figures_from_tuned:main"
+pfizer-simulate-rct = "scripts.simulate_simple_rct_for_phasesyn:main"
+pfizer-simulation-holdout = "scripts.run_simulation_holdout:main"
+pfizer-simulation-pos = "experiments.simulation_pos.run_pipeline:main"
+pfizer-pdc2-holdout = "scripts.pdc2.run_holdout_evaluation:main"
+pfizer-pdc2-figures = "scripts.pdc2.plot_holdout_test_figures:main"
+pfizer-pdc2-treatment-figures = "scripts.pdc2.plot_holdout_by_treatment:main"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["src", "."]
+include = ["pdc2*", "pfizer_synthetic*", "evaluation*", "experiments*", "scripts*", "utils*"]
+exclude = ["tests*", "outputs*", "data*"]
+
+[tool.setuptools.package-data]
+"*" = ["*.yaml", "*.yml", "*.csv", "*.json", "*.txt"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src", ".", "utils"]
+filterwarnings = [
+  "ignore::DeprecationWarning"
+]
